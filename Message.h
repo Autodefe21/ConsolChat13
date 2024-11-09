@@ -11,7 +11,7 @@ public:
 private:
 	std::string message; 
 	std::string recipient; 
-	std::string sender;
+	std::string sender;//
 	
 };
 
