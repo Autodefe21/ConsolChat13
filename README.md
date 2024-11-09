@@ -1,5 +1,5 @@
 # Консольный чат с использованием std::vector.
-Список функциq класса Chat.
+Список функций класса Chat.
 ```C++
 Chat();
 void addUser( std::string& login, std::string& password); //Функция добавления пользователя в вектор.
