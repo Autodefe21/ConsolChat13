@@ -1,7 +1,7 @@
 #include "Chat.h"
 #include "User.h"
 #include <stdexcept>
-#include <cstdlib>
+//#include <cstdlib>
 Chat::Chat() : lastUserId(0) {}
 
 
@@ -44,12 +44,12 @@ bool Chat::registerUser()
     return true;
 }
 
-void Chat::menu()
-{
+void Chat::menu() {
     int choice;
     User user;
 
     while (true) {
+        
         std::cout << "Добро пожаловать в чат!" << std::endl;
         std::cout << "Выберите действие:" << std::endl;
         std::cout << "1. Регистрация нового пользователя" << std::endl;
@@ -57,25 +57,34 @@ void Chat::menu()
         std::cout << "0. Выйти из программы" << std::endl;
 
         std::cout << "Введите номер выбранного действия: ";
-        std::cin >> choice;
+        std::string input;
+        std::cin >> input;
 
-        switch (choice) {
-        case 1:
-            registerUser();
-            
-            break;
-        case 2:
-            logIn();
-            menu2(user);
-            
-            break;
-        case 0:
-            std::cout << "Выход из программы." << std::endl;
-            return;
-        default:
-            std::cout << "Некорректный выбор." << std::endl;
-            break;
+        try {
+            choice = std::stoi(input); 
+            switch (choice) {
+            case 1:
+                registerUser();
+                std::cout << "Регистрация прошла успешно!";
+                break; 
+            case 2:
+                logIn();
+                break;
+            case 0:
+                return; 
+            default:
+                std::cout << "Некорректный выбор. Пожалуйста, выберите 1, 2 или 0." << std::endl;
+                break;
+            }
         }
+        catch (const std::invalid_argument&) {
+            std::cout << "Пожалуйста, введите число." << std::endl;
+        }
+        catch (const std::out_of_range&) {
+            std::cout << "Число вне допустимого диапазона." << std::endl;
+        }
+
+       
     }
 }
 
@@ -105,7 +114,7 @@ void Chat::menu2(User& user) {
                 break; 
             }
             catch (const std::invalid_argument&) {
-                std::cout << "Пожалуйста, введите число." << std::endl;
+                std::cout << "Введите число." << std::endl;
             }
             catch (const std::out_of_range&) {
                 std::cout << "Число вне допустимого диапазона." << std::endl;
@@ -131,7 +140,7 @@ void Chat::menu2(User& user) {
                     break;
                 }
                 catch (const std::invalid_argument&) {
-                    std::cout << "Пожалуйста, введите корректный ID." << std::endl;
+                    std::cout << " Введите корректный ID." << std::endl;
                 }
                 catch (const std::out_of_range&) {
                     std::cout << "ID вне допустимого диапазона." << std::endl;
@@ -168,7 +177,7 @@ void Chat::logIn()
 {
     if (users.empty()) {
         std::cout << "Нет зарегистрированных пользователей. Пожалуйста, зарегистрируйтесь." << std::endl;
-        menu();
+       //menu();
         return; 
     }
 
@@ -184,6 +193,7 @@ void Chat::logIn()
             {
                 currentUser = &user; // Устанавливаем текущего пользователя
                 std::cout << "Успешный вход в аккаунт. Логин: " << login << ", ID: " << user.getId() << std::endl;
+                menu2(user);
                 return; 
             }
         }
@@ -216,15 +226,13 @@ void Chat::printVector()
 
 void Chat::printMessage()
 {
-    std::cout << "Сообщения для пользователя " << currentUser->getLogin() << ":\n";
+    //std::cout << "Сообщения для пользователя " << currentUser->getLogin() << ":\n";
     bool hasMessages = false;
 
     for ( Message& message : messages) {
         if (message.getRecipient() == currentUser->getLogin()) {
             hasMessages = true;
-            std::cout << "От: " << message.getSender()
-                << "\nСообщение: " << message.getMessage();
-               
+            std::cout << "От: " << message.getSender() << " " << "Сообщение: " << message.getMessage() << std::endl;
         }
     }
 
@@ -266,5 +274,12 @@ void Chat::printLog()
      std::cout   << "Пароль: " << currentUser->getPassword() << std::endl;
 }
 
+/* void Chat::clearConsole()
+{
+#ifdef _WIN32 
+    system("cls");
+#endif
+}
+*/
 
 

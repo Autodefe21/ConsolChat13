@@ -21,7 +21,7 @@ public:
 	void sendMessageToUser(int userId, std::string& messageContent);
 	void changeUser();
 	void printLog();
-
+	//void clearConsole();
 private:
 	std::vector<Message> messages;
 	User* currentUser = nullptr;
