@@ -277,7 +277,7 @@ void Chat::printLog()
 /* void Chat::clearConsole()
 {
 #ifdef _WIN32 
-    system("cls");
+    system("cls");//
 #endif
 }
 */
